@@ -1,0 +1,30 @@
+{
+  "name": "studysphere",
+  "version": "1.0.0",
+  "main": "index1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+  },
+  "author": "Ponsar Kumzhi",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "mongodb": "^6.10.0",
+    "nodemon": "^3.1.7",
+    "properties-reader": "^2.3.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.15"
+  },
+  "description": "A vue lesson ordering webapp",
+  "keywords": [
+    "school",
+    "lesson",
+    "ordering",
+    "vue.js",
+    "tailwind",
+    "express"
+  ]
+}
