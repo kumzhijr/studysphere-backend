@@ -164,9 +164,8 @@ app.post('/api/orders', async (req, res) => {
 // Edit availability in lessons collection
 app.put('/api/lessons/:id', async (req, res) => {
   const lessonId = parseInt(req.params.id, 10); // Parse the id parameter as an integer
-  const updates = req.body; // Data to update
+  const updates = req.body; 
 
-  // Validate the updates (you can customize this)
   const allowedFields = ['subject', 'location', 'price', 'availableInventory'];
   const isUpdateValid = Object.keys(updates).every((key) =>
     allowedFields.includes(key)
@@ -179,8 +178,8 @@ app.put('/api/lessons/:id', async (req, res) => {
   try {
     // Find and update the lesson by ID
     const result = await db1.collection('lessons').updateOne(
-      { id: lessonId }, // Match the document by id
-      { $set: updates } // Apply the updates
+      { id: lessonId }, 
+      { $set: updates } 
     );
 
     if (result.matchedCount === 0) {
