@@ -52,9 +52,16 @@ app.param('collectionName', async function(req, res, next, collectionName) {
   }
 });
 
-
+// Logger middleware
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
+  const { method, url, headers, body } = req;
+  const logMessage = `
+    [${new Date().toISOString()}] ${method} ${url}
+    Headers: ${JSON.stringify(headers)}
+    Body: ${JSON.stringify(body)}
+  `;
+  console.log(logMessage);
+
   next();
 });
 
