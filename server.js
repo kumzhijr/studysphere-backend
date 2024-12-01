@@ -58,7 +58,21 @@ app.use((req, res, next) => {
   next();
 });
 
-// Get all lessons
+// Get al lessons
+app.get('/api/lessons', async (req, res) => {
+  try {
+    const collection = db1.collection('lessons');
+    const data = await collection.find({}).toArray();
+
+    console.log('Retrieved data', data);
+    res.json(data);
+  } catch (err) {
+    console.error('Error fetching docs:', err.message);
+    res.status(500).send('Error fetching data');
+  }
+});
+
+// Get lessons by id
 app.get('/api/lessons/:id', async (req, res) => {
   const lessonId = parseInt(req.params.id, 10); // Ensure the ID is treated as a number
   try {
