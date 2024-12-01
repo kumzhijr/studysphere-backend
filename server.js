@@ -40,6 +40,18 @@ async function connectDB() {
 
 connectDB();
 
+app.param('collectionName', async function(req, res, next, collectionName) {
+  try {
+    // Set the dynamic collection to the request object
+    req.collection = db1.collection(collectionName);
+    console.log('Middleware set collection:', req.collection.collectionName); // Debugging line
+    next();
+  } catch (error) {
+    console.error('Error setting collection:', error.message);
+    res.status(500).json({ error: 'Failed to set collection' });
+  }
+});
+
 
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
