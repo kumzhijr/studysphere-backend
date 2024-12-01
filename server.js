@@ -103,6 +103,57 @@ app.get('/search', async (req, res) => {
   }
 });
 
+// Create orders - POST Route
+app.post('/api/orders', async (req, res) => {
+  const { customerName, customerPhone, cart, totalPrice } = req.body;
+
+  // Validate fields
+  if (
+    !customerName ||
+    !customerPhone ||
+    !cart ||
+    !Array.isArray(cart) ||
+    cart.length === 0 ||
+    !totalPrice ||
+    isNaN(totalPrice)
+  ) {
+    return res.status(400).json({ message: 'Missing required fields or invalid data' });
+  }
+
+  try {
+    const order = {
+      customerName,
+      customerPhone,
+      cart,
+      totalPrice,
+      createdAt: new Date(),
+    };
+
+    // Insert the new order into the "orders" collection
+    const result = await db1.collection('orders').insertOne(order);
+
+    // Update lesson availability
+    const bulkOps = cart.map((item) => ({
+      updateOne: {
+        filter: { id: item.lessonId },
+        update: { $inc: { availableInventory: -item.quantity } },
+      },
+    }));
+
+    await db1.collection('lessons').bulkWrite(bulkOps);
+
+    // Respond with success
+    res.status(201).json({
+      message: 'Order successfully placed',
+      orderId: result.insertedId,
+      order,
+    });
+  } catch (err) {
+    console.error('Error saving order:', err.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 // Static File Middleware - Check if image exists
 app.use("/images", (req, res, next) => {
   const { filename } = req.params;
