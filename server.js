@@ -214,6 +214,18 @@ app.use("/images", (req, res, next) => {
 // Serve static files from my directory
 app.use("/images", express.static(path.join(__dirname, "images")));
 
+// Test route for images
+app.get('/images/:fileName', (req, res) => {
+  const filePath = path.join(__dirname, "images", req.params.fileName);
+
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      return res.status(404).json({ message: "Image not Found" });
+    }
+    res.sendFile(filePath);
+  });
+});
+
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Global error handler:', err);
