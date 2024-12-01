@@ -10,7 +10,11 @@ app.set('json spaces', 3);
 app.use(cors());
 app.use(express.json());
 
-let propertiesPath = path.resolve(__dirname, "./db.properties");
+app.get('/', (req,res) => {
+  res.sendFile(path.join(__dirname, 'index,html'))
+})
+
+let propertiesPath = path.resolve(__dirname, "db.properties");
 let properties = PropertiesReader(propertiesPath);
 
 const dbPrefix = properties.get('db.prefix');
