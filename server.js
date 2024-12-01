@@ -230,10 +230,10 @@ app.get('/images/:fileName', (req, res) => {
 });
 
 // Global error handler
-app.use((err, req, res, next) => {
-  console.error('Global error handler:', err);
-  res.status(500).json({ error: 'An error occurred' });
-});
+// app.use((err, req, res, next) => {
+//   console.error('Global error handler:', err);
+//   res.status(500).json({ error: 'An error occurred' });
+// });
 
 // Start the server
 app.listen(3000, () => {
