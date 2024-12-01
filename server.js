@@ -9,7 +9,9 @@ const fs = require('fs');
 app.set('json spaces', 3);
 app.use(cors());
 app.use(express.json());
+app.use('images', express.static('images'));
 
+// previously unpresent
 app.get('/', (req,res) => {
   res.sendFile(path.join(__dirname, 'index,html'));
 })
