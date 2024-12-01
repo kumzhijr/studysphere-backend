@@ -46,7 +46,7 @@ app.use((req, res, next) => {
   next();
 });
 
-
+// Get all lessons
 app.get('/api/lessons/:id', async (req, res) => {
   const lessonId = parseInt(req.params.id, 10); // Ensure the ID is treated as a number
   try {
