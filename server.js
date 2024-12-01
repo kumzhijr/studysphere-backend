@@ -142,7 +142,7 @@ app.post('/api/orders', async (req, res) => {
 
     await db1.collection('lessons').bulkWrite(bulkOps);
 
-    // Respond with success
+    // Respond with success message
     res.status(201).json({
       message: 'Order successfully placed',
       orderId: result.insertedId,
@@ -151,6 +151,39 @@ app.post('/api/orders', async (req, res) => {
   } catch (err) {
     console.error('Error saving order:', err.message);
     res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// Edit availability in lessons collection
+app.put('/api/lessons/:id', async (req, res) => {
+  const lessonId = parseInt(req.params.id, 10); // Parse the id parameter as an integer
+  const updates = req.body; // Data to update
+
+  // Validate the updates (you can customize this)
+  const allowedFields = ['subject', 'location', 'price', 'availableInventory'];
+  const isUpdateValid = Object.keys(updates).every((key) =>
+    allowedFields.includes(key)
+  );
+
+  if (!isUpdateValid) {
+    return res.status(400).json({ message: 'Invalid updates provided.' });
+  }
+
+  try {
+    // Find and update the lesson by ID
+    const result = await db1.collection('lessons').updateOne(
+      { id: lessonId }, // Match the document by id
+      { $set: updates } // Apply the updates
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ message: 'Lesson not found.' });
+    }
+
+    res.status(200).json({ message: 'Lesson updated successfully.' });
+  } catch (error) {
+    console.error('Error updating lesson:', error.message);
+    res.status(500).json({ message: 'Internal server error.' });
   }
 });
 
