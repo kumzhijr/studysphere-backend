@@ -149,7 +149,6 @@ app.post('/api/orders', async (req, res) => {
 
     await db1.collection('lessons').bulkWrite(bulkOps);
 
-    // Respond with success message
     res.status(201).json({
       message: 'Order successfully placed',
       orderId: result.insertedId,
