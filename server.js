@@ -208,6 +208,11 @@ app.use("/images", (req, res, next) => {
 // Serve static files from my directory
 app.use("/images", express.static(path.join(__dirname, "images")));
 
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Global error handler:', err);
+  res.status(500).json({ error: 'An error occurred' });
+});
 
 // Start the server
 app.listen(3000, () => {
