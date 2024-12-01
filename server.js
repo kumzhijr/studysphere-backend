@@ -91,6 +91,9 @@ app.use("/images", (req, res, next) => {
   });
 });
 
+// Serve static files from my directory
+app.use("/images", express.static(path.join(__dirname, "images")));
+
 
 // Start the server
 app.listen(3000, () => {
