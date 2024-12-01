@@ -73,6 +73,24 @@ app.get('/api/lessons/:id', async (req, res) => {
   }
 });
 
+// Static File Middleware - Check if image exists
+app.use("/images", (req, res, next) => {
+  const { filename } = req.params;
+  const imagePath = path.join(__dirname, "images", req.path);
+
+  // Check if the file exists using fs.access
+  fs.access(imagePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.log(`[${new Date().toISOString()}] Image not found: ${req.path}`);
+      return res.status(404).json({
+        message: "Image not Found",
+        requestedPath: filename,
+      });
+    }
+    next(); 
+  });
+});
+
 
 // Start the server
 app.listen(3000, () => {
