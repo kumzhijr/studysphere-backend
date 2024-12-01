@@ -58,7 +58,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Get al lessons
+// Get all lessons
 app.get('/api/lessons', async (req, res) => {
   try {
     const collection = db1.collection('lessons');
@@ -84,6 +84,22 @@ app.get('/api/lessons/:id', async (req, res) => {
   } catch (err) {
     console.error('Error fetching lesson by ID:', err.message);
     res.status(500).send('Error fetching lesson');
+  }
+});
+
+// Search Route
+app.get('/search', async (req, res) => {
+  const query = req.query.q?.toLowerCase() || ''; // Get the query parameter or default to an empty string
+  try {
+    const collection = db1.collection('lessons'); // Ensure 'lessons' is the correct collection name
+    const results = await collection
+      .find({ subject: { $regex: query, $options: 'i' } }) // Case-insensitive search by subject
+      .toArray();
+
+    res.json(results); // Return filtered lessons
+  } catch (err) {
+    console.error('Error fetching search results:', err.message);
+    res.status(500).send('Error fetching search results');
   }
 });
 
