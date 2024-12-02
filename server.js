@@ -166,6 +166,17 @@ app.post('/api/orders', async (req, res) => {
   }
 });
 
+// Get all orders
+app.get('/api/orders', async (req, res) => {
+  try {
+    const orders = await db1.collection('orders').find().toArray();
+    res.status(200).json(orders);
+  } catch (err) {
+    console.error('Error fetching orders:', err.message);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+
 // Edit availability in lessons collection
 app.put('/api/lessons/:id', async (req, res) => {
   const lessonId = parseInt(req.params.id, 10); // Parse the id parameter as an integer
@@ -232,10 +243,10 @@ app.get('/images/:fileName', (req, res) => {
 });
 
 // Global error handler
-// app.use((err, req, res, next) => {
-//   console.error('Global error handler:', err);
-//   res.status(500).json({ error: 'An error occurred' });
-// });
+app.use((err, req, res, next) => {
+  console.error('Global error handler:', err);
+  res.status(500).json({ error: 'An error occurred' });
+});
 
 // Start the server
 app.listen(3000, () => {
