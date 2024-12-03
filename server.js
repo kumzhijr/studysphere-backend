@@ -72,7 +72,7 @@ app.get('/api/lessons', async (req, res) => {
     const collection = db1.collection('lessons');
     const data = await collection.find({}).toArray();
 
-    console.log('Retrieved data', data);
+    // console.log('Retrieved data', data);
     res.json(data);
   } catch (err) {
     console.error('Error fetching docs:', err.message);
