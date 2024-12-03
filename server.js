@@ -60,7 +60,9 @@ app.param('collectionName', async function(req, res, next, collectionName) {
 
 // Logger middleware
 app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  res.on('finish', () => {
+    console.log(`[${new Date().toISOString()}] Request to ${req.method} ${req.url} completed with status ${res.statusCode}`);
+  });
   next();
 });
 
