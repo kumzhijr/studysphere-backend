@@ -13,7 +13,7 @@ app.use('images', express.static('images'));
 
 // previously unpresent
 app.get('/', (req,res) => {
-  res.sendFile(path.join(__dirname, 'index,html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 })
 
 let propertiesPath = path.resolve(__dirname, "db.properties");
